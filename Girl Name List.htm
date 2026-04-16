@@ -6,6 +6,7 @@
 <meta charset="UTF-8" />
 <title>Searchable Downloadable Girl's Name List</title>
 <style>
+
 * {
 	font-family: Inter, "Aptos Display", Arial, sans-serif;
 	font-size: 12pt;
@@ -104,36 +105,29 @@ label.checkbox > input {
 	backdrop-filter: blur(8px);
 	display: block;
 	text-indent: 0;
-	position: sticky;
+	position: fixed;
 	top: 1em;
 	right: 1em;
-	width: calc(100% - 2em);
+	left: 1em;
+	left: auto;
 	z-index: 999999999999999999;
+	transition: width 500ms ease-out;
+	transition: left 500ms ease-out;
 }
 	#download-btn.minimized {
-		animation: minimize-download-button forwards 1 linear;
+		width: fit-content;
+		left: auto;
 	}
 	#download-btn:not(.minimized) {
-		animation: maximize-download-button forwards 1 linear;
+		width: calc(100% - 2em);
+		left: 1em;
 	}
 	.hidden {
 		display: none;
 	}
-	@keyframes minimize-download-button {
-		from {
-			width: calc(100% - 2em);
-		}
-		to {
-			width: auto;
-		}
-	}
-	@keyframes maximize-download-button {
-		from {
-			width: auto;
-		}
-		to {
-			width: calc(100% - 2em);
-		}
+
+	body {
+		margin-top: 2.5em;
 	}
 </style>
 
