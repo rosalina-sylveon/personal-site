@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv=Content-Type content="text/html; charset=UTF-8" />
 <meta charset="UTF-8" />
-<title>Girl Name List</title>
+<title>Searchable Downloadable Girl's Name List</title>
 <style>
 * {
 	font-family: Inter, "Aptos Display", Arial, sans-serif;
@@ -107,10 +107,33 @@ label.checkbox > input {
 	position: fixed;
 	top: 1em;
 	right: 1em;
+	width: calc(100% - 2em);
 	z-index: 999999999999999999;
 }
+	#download-btn.minimized {
+		animation: minimize-download-button forwards 1 linear;
+	}
+	#download-btn:not(.minimized) {
+		animation: maximize-download-button forwards 1 linear;
+	}
 	.hidden {
 		display: none;
+	}
+	@keyframes minimize-download-button {
+		from {
+			width: calc(100% - 2em);
+		}
+		to {
+			width: auto;
+		}
+	}
+	@keyframes maximize-download-button {
+		from {
+			width: auto;
+		}
+		to {
+			width: calc(100% - 2em);
+		}
 	}
 </style>
 
@@ -140,13 +163,23 @@ const setShowFiltered = function(e) {
 		list.classList.remove("show-filtered-out")
 	}
 }
+	const updateDownloadButton = function() {
+		if (window.pageYOffset > 0) {
+				window.downloadBtn.classList.add("minimized")
+		} else {
+				window.downloadBtn.classList.remove("minimized")
+		}
+	}
 const loadFunction = function() {
 	document.querySelector("#search-field").addEventListener("change", searchFunction)
 	document.querySelector("#show-filtered-out").addEventListener("change", setShowFiltered)
 	document.querySelector("#search-field").addEventListener("keydown", searchFunction)
 	document.querySelector("#search-field").addEventListener("keyup", searchFunction)
-	document.querySelector("#download-btn").href = location.href
-	document.querySelector("#download-btn").classList.remove("hidden")
+	document.addEventListener("scroll", updateDownloadButton)
+	window.downloadBtn = document.querySelector("#download-btn")
+	window.downloadBtn.href = location.href
+	window.downloadBtn.classList.remove("hidden")
+	
 	setShowFiltered(undefined)
 	searchFunction(undefined)
 }
