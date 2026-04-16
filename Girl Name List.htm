@@ -109,6 +109,9 @@ label.checkbox > input {
 	right: 1em;
 	z-index: 999999999999999999;
 }
+	.hidden {
+		display: none;
+	}
 </style>
 
 <script>
@@ -142,6 +145,8 @@ const loadFunction = function() {
 	document.querySelector("#show-filtered-out").addEventListener("change", setShowFiltered)
 	document.querySelector("#search-field").addEventListener("keydown", searchFunction)
 	document.querySelector("#search-field").addEventListener("keyup", searchFunction)
+	document.querySelector("#download-btn").href = location.href
+	document.querySelector("#download-btn").classList.remove("hidden")
 	setShowFiltered(undefined)
 	searchFunction(undefined)
 }
@@ -154,7 +159,7 @@ if (document.readyState !== "loading") {
 </head>
 
 <body>
-<a id="download-btn" target="download" href="Girl Name List.htm">Download</a>
+<a id="download-btn" download class="hidden" href="Girl Name List.htm">Download</a>
 <form id="search-form">
 <label class="checkbox">Show filtered out<input id="show-filtered-out" type="checkbox"></input></label>
 <label>Filter<input id="search-field" type="text"></input></label>
