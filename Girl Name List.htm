@@ -148,6 +148,7 @@ label.checkbox > input {
 
 <script>
 	let updateSearchQueryTimeout = null;
+	let anyFilteredIn = true;
 	const getQuery = function(key = null) {
 		if (key) {
 			return new URLSearchParams(location.search).get(key);
@@ -172,7 +173,7 @@ const searchFunction = function(e) {
 		updateSearchQueryTimeout = null;
 	}, 250);
 	const searchQuery = new RegExp(searchQueryString);
-	let anyFound = false;
+	anyFilteredIn = false;
 	for (let i = 0; mainList.children.length; i++) {
 		const itemEl = mainList.children[i];
 		if (itemEl === undefined) {
@@ -180,13 +181,14 @@ const searchFunction = function(e) {
 		}
 		if (searchQuery.test(itemEl.innerText)) {
 			itemEl.classList.remove("filtered-out");
-			anyFound = true;
+			anyFilteredIn = true;
 		} else {
 			itemEl.classList.add("filtered-out");
 		}
 	}
+	const showFilteredOut = document.querySelector("#show-filtered-out").checked
 	const listEmptyPlaceholder = document.querySelector("#list-empty-placeholder");
-	if (anyFound) {
+	if (anyFilteredIn || showFilteredOut) {
 		listEmptyPlaceholder.classList.add("hidden");
 	} else {
 		listEmptyPlaceholder.classList.remove("hidden");
@@ -197,8 +199,12 @@ const setShowFiltered = function(e) {
 	const list = document.querySelector("#main-list")
 	if (showFilteredOut) {
 		list.classList.add("show-filtered-out")
+		document.querySelector("#list-empty-placeholder").add("hidden");
 	} else {
 		list.classList.remove("show-filtered-out")
+		if (!anyFilteredIn) {
+			document.querySelector("#list-empty-placeholder").remove("hidden");
+		}
 	}
 	setQuery("show_all", showFilteredOut ? "true" : "false");
 }
