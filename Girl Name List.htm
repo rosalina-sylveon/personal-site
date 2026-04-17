@@ -169,6 +169,24 @@ const setShowFiltered = function(e) {
 		}
 	}
 const loadFunction = function() {
+	let split = location.search.replace(/^\?/, "").split("&")
+	for (let i = 0; i < split.length; i++) {
+  		kv = split[i].split("=")
+		key = kv[0]
+		value = kv[1]
+		switch (key) {
+    		case "q": {
+				document.querySelector("#search-field").value = value
+			} break;
+    		case "show_all": {
+				if (value == "true") {
+					document.querySelector("#show-filtered-out").checked = true
+				} else {
+			        document.querySelector("#show-filtered-out").checked = false
+    		  	}
+			}
+		}
+	}
 	document.querySelector("#search-field").addEventListener("change", searchFunction)
 	document.querySelector("#show-filtered-out").addEventListener("change", setShowFiltered)
 	document.querySelector("#search-field").addEventListener("keydown", searchFunction)
