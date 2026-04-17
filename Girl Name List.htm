@@ -199,11 +199,11 @@ const setShowFiltered = function(e) {
 	const list = document.querySelector("#main-list")
 	if (showFilteredOut) {
 		list.classList.add("show-filtered-out")
-		document.querySelector("#list-empty-placeholder").add("hidden");
+		document.querySelector("#list-empty-placeholder").classList.add("hidden");
 	} else {
 		list.classList.remove("show-filtered-out")
 		if (!anyFilteredIn) {
-			document.querySelector("#list-empty-placeholder").remove("hidden");
+			document.querySelector("#list-empty-placeholder").classList.remove("hidden");
 		}
 	}
 	setQuery("show_all", showFilteredOut ? "true" : "false");
