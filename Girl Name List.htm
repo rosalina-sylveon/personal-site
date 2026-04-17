@@ -136,14 +136,14 @@ label.checkbox > input {
 </style>
 
 <script>
-	const getQuery(key = null) {
+	const getQuery = function(key = null) {
 		if (key) {
 			return new URLSearchParams(location.search).get(key);
 		} else {
 			return new URLSearchParams(location.search);
 		}
 	}
-	const setQuery(key, value) {
+	const setQuery = function(key, value) {
 		const url = new URL(window.location);
 		url.searchParams.set(key, value);
 		window.history.replaceState({}, '', url);
