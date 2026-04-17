@@ -159,7 +159,7 @@ const searchFunction = function(e) {
 	updateSearchQueryTimeout = setTimeout(() => {
 		setQuery("q", searchQueryString);
 		updateSearchQueryTimeout = null;
-	}, 100);
+	}, 250);
 	const searchQuery = new RegExp(searchQueryString);
 	for (let i = 0; mainList.children.length; i++) {
 		const itemEl = mainList.children[i];
