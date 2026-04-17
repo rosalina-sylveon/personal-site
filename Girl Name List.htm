@@ -104,31 +104,33 @@ label.checkbox > input {
 	background-color: transparent;
 	backdrop-filter: blur(8px);
 	display: block;
+	text-align: center;
 	text-indent: 0;
 	position: fixed;
 	top: 1em;
 	right: 1em;
-	left: 1em;
-	left: auto;
 	z-index: 999999999999999999;
-	transition: width 500ms ease-out;
-	transition: left 500ms ease-out;
+	transition: width 500ms ease-out, left 500ms ease-out;
 }
 	#download-btn.minimized {
-		width: fit-content;
-		left: auto;
+		width: calc(8ch + 0.25em);
 	}
 	#download-btn:not(.minimized) {
 		width: calc(100% - 2em);
-		left: 1em;
 	}
 	.hidden {
 		display: none;
 	}
 
 	body {
-		margin-top: 2.5em;
+		margin: 0;
+		position: fixed;
+		inset: 0.25em;
+		top: 2.5em;
+		left: calc(1em - 2px);
+		margin-left: 0.25in;
 	}
+
 </style>
 
 <script>
