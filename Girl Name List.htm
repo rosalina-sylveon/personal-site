@@ -133,6 +133,11 @@ label.checkbox > input {
 		left: calc(1em - 2px);
 		margin-left: 0.25in;
 	}
+	#list-empty-placeholder > .error-text {
+		opacity: 0.75;
+		font-style: italic;
+		text-align: center;
+	}
 
 </style>
 
@@ -162,16 +167,24 @@ const searchFunction = function(e) {
 		updateSearchQueryTimeout = null;
 	}, 250);
 	const searchQuery = new RegExp(searchQueryString);
+	let anyFound = false;
 	for (let i = 0; mainList.children.length; i++) {
 		const itemEl = mainList.children[i];
 		if (itemEl === undefined) {
 			break;
 		}
 		if (searchQuery.test(itemEl.innerText)) {
-			itemEl.classList.remove("filtered-out");			
+			itemEl.classList.remove("filtered-out");
+			anyFound = true;
 		} else {
 			itemEl.classList.add("filtered-out");
 		}
+	}
+	const listEmptyPlaceholder = document.querySelector("#list-empty-placeholder");
+	if (anyFound) {
+		listEmptyPlaceholder.classList.add("hidden");
+	} else {
+		listEmptyPlaceholder.classList.remove("hidden");
 	}
 }
 const setShowFiltered = function(e) {
@@ -228,6 +241,9 @@ if (document.readyState !== "loading") {
 <label class="checkbox">Show filtered out<input id="show-filtered-out" type="checkbox"></input></label>
 <label>Filter<input id="search-field" type="text"></input></label>
 </form>
+	<div class="hidden" id="list-empty-placeholder">
+		<p class="error-text">No match found.</p>
+	</div>
 <div class="searchable" id="main-list">
 <p class="numbered">Olivia</p>
 <p class="numbered">Emma</p>
