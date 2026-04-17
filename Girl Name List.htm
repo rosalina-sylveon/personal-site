@@ -136,6 +136,7 @@ label.checkbox > input {
 </style>
 
 <script>
+	let updateSearchQueryTimeout = null;
 	const getQuery = function(key = null) {
 		if (key) {
 			return new URLSearchParams(location.search).get(key);
@@ -152,7 +153,13 @@ const searchFunction = function(e) {
 	const mainList = document.querySelector("#main-list");
 	const searchInput = document.querySelector("#search-field");
 	const searchQueryString = searchInput.value;
-	setQuery("q", searchQueryString);
+	if (updateSearchQueryTimeout !== null) {
+		clearTimeout(updateSearchQueryTimeout);
+	}
+	updateSearchQueryTimeout = setTimeout(() => {
+		setQuery("q", searchQueryString);
+		updateSearchQueryTimeout = null;
+	}, 100);
 	const searchQuery = new RegExp(searchQueryString);
 	for (let i = 0; mainList.children.length; i++) {
 		const itemEl = mainList.children[i];
