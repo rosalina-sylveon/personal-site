@@ -41,7 +41,7 @@ input[type="submit"], button {
 }
 .show-filtered-out {
 	--filtered-out-display-property: block;
-}	
+}
 .filtered-out {
 	display: var(--filtered-out-display-property);
 	opacity: 0.5;
@@ -99,9 +99,20 @@ label.checkbox {
 label.checkbox > input {
 	float: right;
 }
-#download-btn {
+#download-btn-container {
+	display: flex;
+	flex-direction: row;
+	z-index: 999999999999999999;
+	position: fixed;
+	top: 1em;
+	right: 1em;
+	transition: width 500ms ease-out, left 500ms ease-out;
+}
+#download-btn-container > * {
+    cursor: pointer;
 	text-decoration: none;
 	color: black;
+	flex-grow: 1;
 	border: 1px solid #000;
 	border-radius: 4pt;
 	background-color: transparent;
@@ -109,16 +120,19 @@ label.checkbox > input {
 	display: block;
 	text-align: center;
 	text-indent: 0;
-	position: fixed;
-	top: 1em;
-	right: 1em;
-	z-index: 999999999999999999;
-	transition: width 500ms ease-out, left 500ms ease-out;
+	min-width: fit-content;
 }
-	#download-btn.minimized {
-		width: calc(8ch + 0.25em);
+#download-btn-container > button[disabled] {
+    opacity: 0.5;
+    cursor: default;
+}
+	#download-btn-container > :not(:first-child) {
+	    margin-left: 0.25em;
 	}
-	#download-btn:not(.minimized) {
+	#download-btn-container.minimized {
+		width: calc(8ch + (0.25em * 3) + 14ch);
+	}
+	#download-btn-container:not(.minimized) {
 		width: calc(100% - 2em);
 	}
 	.hidden {
@@ -149,6 +163,18 @@ label.checkbox > input {
 <script>
 	let updateSearchQueryTimeout = null;
 	let anyFilteredIn = true;
+	/**
+	 * @type {Event | undefined} e
+	 */
+	const updatePermalink = function(e = undefined) {
+		const btn = document.querySelector("#permalink-btn");
+		if (location.protocol == "file:" || location.protocol == "blob:") {
+		  btn.disabled = true;
+		} else {
+          btn.disabled = false;
+		  btn.dataset["permalink"] = location.href;
+		}
+	}
 	const getQuery = function(key = null) {
 		if (key) {
 			return new URLSearchParams(location.search).get(key);
@@ -160,6 +186,7 @@ label.checkbox > input {
 		const url = new URL(window.location);
 		url.searchParams.set(key, value);
 		window.history.replaceState({}, '', url);
+		updatePermalink()
 	}
 const searchFunction = function(e) {
 	const mainList = document.querySelector("#main-list");
@@ -210,12 +237,18 @@ const setShowFiltered = function(e) {
 }
 	const updateDownloadButton = function() {
 		if (window.pageYOffset > 0) {
-				window.downloadBtn.classList.add("minimized")
+				window.downloadBtnContainer.classList.add("minimized")
 		} else {
-				window.downloadBtn.classList.remove("minimized")
+				window.downloadBtnContainer.classList.remove("minimized")
 		}
 	}
+	const copyPermalink = function(e) {
+		e.preventDefault();
+		const btn = document.querySelector("#permalink-btn");
+		navigator.clipboard.writeText(btn.dataset["permalink"]);
+	}
 const loadFunction = function() {
+	document.querySelector("#permalink-btn").addEventListener('click', copyPermalink);
 	const initialSearchParam = getQuery("q");
 	if (initialSearchParam) {
 		document.querySelector("#search-field").value = initialSearchParam;
@@ -232,11 +265,13 @@ const loadFunction = function() {
 	document.querySelector("#search-field").addEventListener("keyup", searchFunction)
 	document.addEventListener("scroll", updateDownloadButton)
 	window.downloadBtn = document.querySelector("#download-btn")
-	window.downloadBtn.href = location.href
+	window.downloadBtn.href = `${location.origin}${location.pathname}`
 	window.downloadBtn.classList.remove("hidden")
-	
+	window.downloadBtnContainer = document.querySelector("#download-btn-container");
+
 	setShowFiltered(undefined)
 	searchFunction(undefined)
+	updatePermalink()
 }
 if (document.readyState !== "loading") {
 	loadFunction()
@@ -247,7 +282,7 @@ if (document.readyState !== "loading") {
 </head>
 
 <body>
-<a id="download-btn" download class="hidden" href="Girl Name List.htm">Download</a>
+	<div id="download-btn-container"><a id="download-btn" download class="hidden" href="Girl Name List.htm">Download</a><button id="permalink-btn" disabled>Copy Permalink</button></div>
 <form id="search-form">
 <label class="checkbox">Show filtered out<input id="show-filtered-out" type="checkbox"></input></label>
 <label>Filter<input id="search-field" type="text"></input></label>
