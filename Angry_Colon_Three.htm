@@ -5,10 +5,35 @@
 			>:3
 		</title>
 		<meta charset="UTF-8" />
+		<link rel="preconnect" href="https://rsms.me/">
+		<link rel="stylesheet" href="https://rsms.me/inter/inter.css">
 	</head>
 	<body>		
-		<div style="justify-items: center; justify-content: center; align-items: center; display: flex;"><span style="font-size: 360pt; line-height: 360pt;">&gt;</span><span style="font-size: 16pt; line-height: 16pt;">:3</span></div>
+		<div class="center">
+			<span class="massive">&gt;</span><span class="tiny">:3</span></div>
 		<style>
+			:root {
+				font-family: Inter, sans-serif;
+				font-feature-settings: 'liga' 1, 'calt' 1; /* fix for Chrome */
+			}
+			@supports (font-variation-settings: normal) {
+				:root { font-family: InterVariable, sans-serif; }
+			}
+			.center {
+				justify-items: center;
+				justify-content: center;
+				align-items: center;
+				display: flex;
+			}
+			.massive {
+				font-size: 100vh;
+				line-height: 100vh;
+			}
+			.tiny {
+				font-size: 8vh;
+				line-height: 8vh;
+				margin-top: 6vh;
+			}
 			* {
 				font-family: sans-serif;
 			}
